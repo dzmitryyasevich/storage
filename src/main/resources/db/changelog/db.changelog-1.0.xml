@@ -1,0 +1,55 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1.0.1" author="dyasevich">
+        <comment>Init DB: create schema and tables</comment>
+        <sql splitStatements="true">
+
+            CREATE TABLE `storage`.`brands` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `name` VARCHAR(100) NOT NULL,
+            PRIMARY KEY (`id`));
+
+            CREATE TABLE `storage`.`products` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `name` VARCHAR(100) NOT NULL,
+            `brand_id` INT NOT NULL,
+            `price` FLOAT NOT NULL,
+            `size` INT NOT NULL,
+            `quantity` INT NOT NULL DEFAULT 0,
+            PRIMARY KEY (`id`),
+            INDEX `brand_id_idx` (`brand_id` ASC) VISIBLE,
+            CONSTRAINT `brand_id`
+            FOREIGN KEY (`brand_id`)
+            REFERENCES `storage`.`brands` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION);
+        </sql>
+    </changeSet>
+
+    <changeSet id="1.0.2" author="dyasevich">
+        <comment>Init DB: fill tables data</comment>
+        <sql splitStatements="true">
+            INSERT INTO `storage`.`brands` (`name`) VALUES ('Dolce &amp; Gabbana');
+            INSERT INTO `storage`.`brands` (`name`) VALUES ('Jimmy Choo');
+            INSERT INTO `storage`.`brands` (`name`) VALUES ('Jean Paul Gaultier');
+            INSERT INTO `storage`.`brands` (`name`) VALUES ('Versace');
+            INSERT INTO `storage`.`brands` (`name`) VALUES ('Calvin Klein');
+
+            INSERT INTO `storage`.`products` (`name`, `brand_id`, `price`, `size`, `quantity`) VALUES ('Light Blue', '1', '16.64', '50', '122');
+            INSERT INTO `storage`.`products` (`name`, `brand_id`, `price`, `size`, `quantity`) VALUES ('Jimmy Choo', '2', '9.87', '30', '12');
+            INSERT INTO `storage`.`products` (`name`, `brand_id`, `price`, `size`, `quantity`) VALUES ('Jean Paul Gaultier', '3', '9.55', '70', '1024');
+            INSERT INTO `storage`.`products` (`name`, `brand_id`, `price`, `size`, `quantity`) VALUES ('Eternity', '5', '24.33', '50', '125');
+            INSERT INTO `storage`.`products` (`name`, `brand_id`, `price`, `size`, `quantity`) VALUES ('Versace Eros', '4', '10.56', '30', '12');
+            INSERT INTO `storage`.`products` (`name`, `brand_id`, `price`, `size`, `quantity`) VALUES ('Versace Eros', '4', '12.45', '50', '44');
+            INSERT INTO `storage`.`products` (`name`, `brand_id`, `price`, `size`, `quantity`) VALUES ('Versace Eros', '4', '18.09', '100', '2');
+
+        </sql>
+    </changeSet>
+
+
+
+</databaseChangeLog>
